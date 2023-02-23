@@ -1,0 +1,7 @@
+function loadPost() {
+
+}
+
+function postUrl() {
+    
+}
