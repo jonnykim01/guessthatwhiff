@@ -4,7 +4,7 @@ let models = {}
 
 // connect to MongoDB
 console.log('connecting to mongoDB')
-await mongoose.connect('mongodb+srv://Ryan1598:LxWpQVKWqABYZyaP@cluster0.l8h50sm.mongodb.net/?retryWrites=true&w=majority');
+await mongoose.connect('mongodb+srv://Ryan1598:LxWpQVKWqABYZyaP@cluster0.l8h50sm.mongodb.net/guess-that-whiff?retryWrites=true&w=majority');
 console.log('successfully connected to mongoDB')
 
 // create schemas
@@ -12,6 +12,8 @@ const postSchema = new mongoose.Schema({
     url: String,
     rank: String,
     created_date: Date
+},{
+    collection: ''
 })
 
 //create model from schema
