@@ -4,8 +4,7 @@ let models = {}
 
 // connect to MongoDB
 console.log('connecting to mongoDB')
-// TODO: insert connection string
-await mongoose.connect('insert connection string');
+await mongoose.connect('mongodb+srv://Ryan1598:LxWpQVKWqABYZyaP@cluster0.l8h50sm.mongodb.net/?retryWrites=true&w=majority');
 console.log('successfully connected to mongoDB')
 
 // create schemas
@@ -20,4 +19,4 @@ models.Post = mongoose.model('Post', postSchema)
 
 console.log('mongoose models created')
 
-export default models
+export default models;
