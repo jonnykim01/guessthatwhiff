@@ -1,3 +1,5 @@
+const youtubeEmbedUrl = "https://youtube.com/embed/";
+
 async function init(){
     let urlInput = document.getElementById("urlInput");
     loadPosts();
@@ -10,10 +12,14 @@ async function loadPost(){
     // for testing
     console.log("pst! The correct answer is " + postInfo.rank)
 
+    // get id from youtube link
+    let vidId = postInfo.url.split("watch?v=")[1];
+    vidId = vidId.split("&")[0];
+
     let postsHtml = `
         <div id="post">
             <h2>Guess the rank of this clip</h2>
-            <a href='${postInfo.url}' target='_blank'>${postInfo.url}</a>
+            <iframe width=1000 height=563 src='${youtubeEmbedUrl + vidId}'></iframe>
         </div>
         <div id="guess">
             <label for="rankGuess">What rank is this clip?:</label>
