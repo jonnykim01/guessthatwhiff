@@ -33,23 +33,26 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   console.log('Attempting to POST: ' + req.body)
+  if (req.body.rank == "") {
+    res.json({status: "error", error: "rank is not selected"});
+  } else {
+    try {
+      // create a new Post object and fill in its contents
+      const newPost = new req.models.Post({
+        url: req.body.url,
+        rank: req.body.rank,
+        created_date: new Date()
+      })
 
-  try {
-    // create a new Post object and fill in its contents
-    const newPost = new req.models.Post({
-      url: req.body.url,
-      rank: req.body.rank,
-      created_date: new Date()
-    })
+      // save post to database
+      await newPost.save()
 
-    // save post to database
-    await newPost.save()
-
-    // return json status
-    res.json({"status" : "success"})
-  } catch (err) {
-    console.log(err.message)
-    res.status(500).json({"status": "error", "error": err.message})
+      // return json status
+      res.json({"status" : "success"})
+    } catch (err) {
+      console.log(err.message)
+      res.status(500).json({"status": "error", "error": err.message})
+    }
   }
 })
 
