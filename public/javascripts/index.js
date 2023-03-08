@@ -5,6 +5,15 @@ async function init(){
     loadPosts();
 }
 
+function signIn() {
+    document.getElementById("make_post_div").classList.remove("display")
+    console.log("here")
+}
+
+function signOut() {
+
+}
+
 async function loadPost(){
     document.getElementById("post_box").innerText = "Loading...";
     let postInfo = await fetchJSON(`api/posts/`)
@@ -18,37 +27,21 @@ async function loadPost(){
 
     let postsHtml = `
         <div id="post">
-            <h2>Guess the rank of this clip</h2>
+            <h2 class="pt-5">Guess the rank of this clip</h2>
             <iframe width=1000 height=563 src='${youtubeEmbedUrl + vidId}'></iframe>
         </div>
-        <div id="guess">
+        <div id="guess" class="pt-2">
             <label for="rankGuess">What rank is this clip?:</label>
             <select name="rank" id="rankGuess">
             <option value="">--Please choose an option--</option>
-            <option value="iron 1">Iron 1</option>
-            <option value="iron 2">Iron 2</option>
-            <option value="iron 3">Iron 3</option>
-            <option value="bronze 1">Bronze 1</option>
-            <option value="bronze 2">Bronze 2</option>
-            <option value="bronze 3">Bronze 3</option>
-            <option value="silver 1">Silver 1</option>
-            <option value="silver 2">Silver 2</option>
-            <option value="silver 3">Silver 3</option>
-            <option value="gold 1">Gold 1</option>
-            <option value="gold 2">Gold 2</option>
-            <option value="gold 3">Gold 3</option>
-            <option value="platinum 1">Platinum 1</option>
-            <option value="platinum 2">Platinum 2</option>
-            <option value="platinum 3">Platinum 3</option>
-            <option value="diamond 1">Diamond 1</option>
-            <option value="diamond 2">Diamond 2</option>
-            <option value="diamond 3">Diamond 3</option>
-            <option value="acendant 1">Acendant 1</option>
-            <option value="acendant 2">Acendant 2</option>
-            <option value="acendant 3">Acendant 3</option>
-            <option value="immortal 1">Immortal 1</option>
-            <option value="immortal 2">Immortal 2</option>
-            <option value="immortal 3">Immortal 3</option>
+            <option value="iron">Iron</option>
+            <option value="bronze">Bronze</option>
+            <option value="silver">Silver</option>
+            <option value="gold">Gold</option>
+            <option value="platinum">Platinum</option>
+            <option value="diamond">Diamond</option>
+            <option value="acendant">Acendant</option>
+            <option value="immortal">Immortal</option>
             <option value="radiant">Radiant</option>
             </select>
             <div id="results"></div>
@@ -63,6 +56,7 @@ async function loadPost(){
 
     let guessResult = document.createElement('div');
     guessResult.classList.add("guessResult");
+    guessResult.classList.add("pt-3");
     document.getElementById("guess").appendChild(guessResult)
 }
 
@@ -92,6 +86,7 @@ function guess(post) {
 
 
     let result = document.createElement('p');
+    result.classList.add("mt-3");
 
     if(guess == post.rank) {
         console.log("correct!")

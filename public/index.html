@@ -5,46 +5,36 @@
   <link rel="stylesheet" href="/stylesheets/style.css">
   <script src="javascripts/index.js"></script>
   <script src="javascripts/utils.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </head>
 
 <body>
   <h1>Guess that Whiff</h1>
   <p>Welcome to Guess that Whiff. This site is for sharing your Valorant funny moments and fails. Post a YouTube link of your clips or guess the rank of another users clip.</p>
+  <p>For a better viewing experience, you can sign in via microsoft to be able to save videos and keep track of your guessing streak!</p>
+  <button><a href="signin">Sign In</a></button>
+  <button><a href="signout">Sign Out</a></button>
+  <button><a href="/userInfo.html">My Page</a></button>
   <hr>
   <div>
     <h2>Post:</h2>
     <button onclick="loadPost()">Load a random post</button>
     <div id="post_box"></div>
     <hr>
-    <div id="make_post_div" class="d-none">
+    <div id="make_post_div">
       <h2>Post new clip:</h2>
       <label for="rankInput">Enter your rank (at the time of the clip):</label>
       <select name="rank" id="rankInput">
           <option value="">--Please choose an option--</option>
-          <option value="iron 1">Iron 1</option>
-          <option value="iron 2">Iron 2</option>
-          <option value="iron 3">Iron 3</option>
-          <option value="bronze 1">Bronze 1</option>
-          <option value="bronze 2">Bronze 2</option>
-          <option value="bronze 3">Bronze 3</option>
-          <option value="silver 1">Silver 1</option>
-          <option value="silver 2">Silver 2</option>
-          <option value="silver 3">Silver 3</option>
-          <option value="gold 1">Gold 1</option>
-          <option value="gold 2">Gold 2</option>
-          <option value="gold 3">Gold 3</option>
-          <option value="platinum 1">Platinum 1</option>
-          <option value="platinum 2">Platinum 2</option>
-          <option value="platinum 3">Platinum 3</option>
-          <option value="diamond 1">Diamond 1</option>
-          <option value="diamond 2">Diamond 2</option>
-          <option value="diamond 3">Diamond 3</option>
-          <option value="acendant 1">Acendant 1</option>
-          <option value="acendant 2">Acendant 2</option>
-          <option value="acendant 3">Acendant 3</option>
-          <option value="immortal 1">Immortal 1</option>
-          <option value="immortal 2">Immortal 2</option>
-          <option value="immortal 3">Immortal 3</option>
+          <option value="iron">Iron</option>
+          <option value="bronze">Bronze</option>
+          <option value="silver">Silver</option>
+          <option value="gold">Gold</option>
+          <option value="platinum">Platinum</option>
+          <option value="diamond">Diamond</option>
+          <option value="acendant">Acendant</option>
+          <option value="immortal">Immortal</option>
           <option value="radiant">Radiant</option>
       </select>
       <p>Enter the youTube url</p><input type="text" id="urlInput" />
