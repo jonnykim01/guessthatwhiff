@@ -20,59 +20,64 @@ async function checkProfile() {
 }
 
 async function loadPost(){
-    let identityInfo = await fetchJSON(`api/users/myIdentity`);
-    let username = identityInfo.userInfo.username;
+    try {
+        let identityInfo = await fetchJSON(`api/users/myIdentity`);
+        let username = identityInfo.userInfo.username;
 
-    document.getElementById("post_box").innerText = "Loading...";
-    let postInfo = await fetchJSON(`api/posts?username=${username}`);
+        document.getElementById("post_box").innerText = "Loading...";
+        let postInfo = await fetchJSON(`api/posts?username=${username}`);
 
-    // for testing
-    console.log("pst! The correct answer is " + postInfo.rank);
+        // for testing
+        console.log("pst! The correct answer is " + postInfo.rank);
 
-    // get id from youtube link
-    let vidId = postInfo.url.split("watch?v=")[1];
-    vidId = vidId.split("&")[0];
+        // get id from youtube link
+        let vidId = postInfo.url.split("watch?v=")[1];
+        vidId = vidId.split("&")[0];
 
-    let postsHtml = `
-        <div id="post">
-            <h2 class="pt-5">Guess the rank of this clip</h2>
-            <iframe width=1000 height=563 src='${youtubeEmbedUrl + vidId}'></iframe>
-        </div>
-        <div id="guess" class="pt-2">
-            <label for="rankGuess">What rank is this clip?:</label>
-            <select name="rank" id="rankGuess">
-            <option value="">--Please choose an option--</option>
-            <option value="iron">Iron</option>
-            <option value="bronze">Bronze</option>
-            <option value="silver">Silver</option>
-            <option value="gold">Gold</option>
-            <option value="platinum">Platinum</option>
-            <option value="diamond">Diamond</option>
-            <option value="acendant">Acendant</option>
-            <option value="immortal">Immortal</option>
-            <option value="radiant">Radiant</option>
-            </select>
-            <div id="results"></div>
-        </div>`;
-    document.getElementById("post_box").innerHTML = postsHtml;
-    let guessButton = document.createElement('button');
-    guessButton.innerHTML = "Submit Guess";
-    guessButton.addEventListener('click', function(){
-        guess(postInfo);
-    });
-    document.getElementById("guess").appendChild(guessButton);
+        let postsHtml = `
+            <div id="post">
+                <h2 class="pt-5">Guess the rank of this clip</h2>
+                <iframe width=1000 height=563 src='${youtubeEmbedUrl + vidId}'></iframe>
+            </div>
+            <div id="guess" class="pt-2">
+                <label for="rankGuess">What rank is this clip?:</label>
+                <select name="rank" id="rankGuess">
+                <option value="">--Please choose an option--</option>
+                <option value="iron">Iron</option>
+                <option value="bronze">Bronze</option>
+                <option value="silver">Silver</option>
+                <option value="gold">Gold</option>
+                <option value="platinum">Platinum</option>
+                <option value="diamond">Diamond</option>
+                <option value="acendant">Acendant</option>
+                <option value="immortal">Immortal</option>
+                <option value="radiant">Radiant</option>
+                </select>
+                <div id="results"></div>
+            </div>`;
+        document.getElementById("post_box").innerHTML = postsHtml;
+        let guessButton = document.createElement('button');
+        guessButton.innerHTML = "Submit Guess";
+        guessButton.addEventListener('click', function(){
+            guess(postInfo);
+        });
+        document.getElementById("guess").appendChild(guessButton);
 
-    let saveButton = document.createElement('button');
-    saveButton.innerHTML = "Save Video";
-    saveButton.addEventListener('click', function(){
-        saveVideo(postInfo);
-    });
-    document.getElementById("guess").appendChild(saveButton);
+        let saveButton = document.createElement('button');
+        saveButton.innerHTML = "Save Video";
+        saveButton.addEventListener('click', function(){
+            saveVideo(postInfo);
+        });
+        document.getElementById("guess").appendChild(saveButton);
 
-    let guessResult = document.createElement('div');
-    guessResult.classList.add("guessResult");
-    guessResult.classList.add("pt-3");
-    document.getElementById("guess").appendChild(guessResult);
+        let guessResult = document.createElement('div');
+        guessResult.classList.add("guessResult");
+        guessResult.classList.add("pt-3");
+        document.getElementById("guess").appendChild(guessResult);
+    } catch (err) {
+        console.log(error);
+        throw(error);
+    }
 }
 
 async function postUrl(){
@@ -137,15 +142,15 @@ async function guess(post) {
 }
 
 async function saveVideo(postInfo) {
-    let identityInfo = await fetchJSON(`api/users/myIdentity`);
-    let username = identityInfo.userInfo.username;
+    try {
+        let identityInfo = await fetchJSON(`api/users/myIdentity`);
+        let username = identityInfo.userInfo.username;
 
-    try{
         await fetchJSON(`api/save`, {
             method: "POST",
             body: {url : postInfo.url, username: username}
         });
-    }catch(error){
+    } catch(error){
         document.getElementById("postStatus").innerText = "Error";
         throw(error);
     }
@@ -161,7 +166,7 @@ async function seenVideo(post, correct) {
             method: "POST",
             body: {url: post.url, username: username, correct: correct}
         });
-    }catch(error){
+    } catch(error){
         console.log(error);
         throw(error);
     }

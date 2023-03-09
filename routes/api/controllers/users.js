@@ -33,26 +33,33 @@ router.get('/', async function(req, res, next) {
     res.status(500).json({
       "status": "error",
       "error": err.message
-    })
+    });
   }
-  
+
 });
 
 router.post('/', async (req, res, next) => {
-  if(req.session.isAuthenticated){
-    let user = await req.models.User.findOne({username: req.body.username});
-    if (user == null) {
-      const newUser = new req.models.User({
-          username: req.body.username,
-          saved_videos: [],
-          current_streak: 0,
-          longest_streak: 0,
-          seen_videos: []
-      });
+  try {
+    if(req.session.isAuthenticated){
+      let user = await req.models.User.findOne({username: req.body.username});
+      if (user == null) {
+        const newUser = new req.models.User({
+            username: req.body.username,
+            saved_videos: [],
+            current_streak: 0,
+            longest_streak: 0,
+            seen_videos: []
+        });
 
-      await newUser.save();
-    }
-  };
+        await newUser.save();
+      }
+    };
+  } catch (err) {
+    res.status(500).json({
+      "status": "error",
+      "error": err.message
+    });
+  }
 });
 
 export default router;
