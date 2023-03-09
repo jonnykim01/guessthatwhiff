@@ -27,7 +27,12 @@ async function loadPost(){
         document.getElementById("post_box").innerText = "Loading...";
         let postInfo = await fetchJSON(`api/posts?username=${username}`);
         if (postInfo.content) {
-            document.getElementById("post_box").innerHTML = postInfo.content;
+            let postBox = document.getElementById("post_box");
+            postBox.innerHTML = postInfo.content;
+            document.getElementById("reset").addEventListener("click", () => {
+                resetVideos();
+                postBox.innerHTML = "Videos have successfully been reset."
+            })
         } else {
             console.log("pst! The correct answer is " + postInfo.rank);
 

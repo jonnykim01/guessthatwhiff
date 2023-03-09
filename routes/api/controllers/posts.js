@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
         res.json({content: `
           <div class="mt-2">
             <h2>You watched all of the videos. Would you like to reset and watch the videos again?</h2>
-            <button onclick="resetVideos()">Reset!</button>
+            <button id="reset">Reset!</button>
           </div>
         `});
       } else {
