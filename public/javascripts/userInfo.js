@@ -6,6 +6,7 @@ async function init() {
         if(identityInfo.status == "loggedin") {
             identityDiv.innerHTML = `Logged in as ${identityInfo.userInfo.name} (${identityInfo.userInfo.username})`;
 
+            loadStreaks(identityInfo);
             loadSavedVideos(identityInfo);
         } else {
             identityDiv.innerHTML = `Not logged in. Return to homepage to login`;
@@ -64,5 +65,21 @@ async function deleteSavedVideos(url) {
     } catch(error){
         console.log(error);
         throw(error);
+    }
+}
+
+async function loadStreaks(identityInfo) {
+    try{
+        let user = await fetchJSON(`/api/users?username=${identityInfo.userInfo.username}`);
+
+        let currStreak = document.createElement("p");
+        currStreak.innerHTML = "Current Streak: " + user.current_streak;
+        let longStreak = document.createElement("p");
+        longStreak.innerHTML = "Longest Streak: " + user.longest_streak;
+
+        document.getElementById("streaks").appendChild(currStreak);
+        document.getElementById("streaks").appendChild(longStreak);
+    } catch (err) {
+
     }
 }

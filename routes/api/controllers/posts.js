@@ -84,10 +84,27 @@ router.post("/seen", async (req, res, next) => {
   try {
     let user = await req.models.User.findOne({username: username});
     console.log(user);
+
     let seenVids = user.seen_videos;
     seenVids.push(url);
 
-    await req.models.User.updateOne({username: username}, {seen_videos: seenVids, saved_videos: user.saved_videos, longest_streak: user.longest_streak});
+    let currStreak = user.current_streak;
+    let longStreak = user.longest_streak;
+    if (correct) {
+      currStreak ++;
+      if (currStreak > longStreak) {
+        longStreak = currStreak;
+      }
+    } else {
+      if (currStreak > longStreak) {
+        longStreak = currStreak;
+      }
+      currStreak = 0;
+    }
+
+    await req.models.User.updateOne({username: username}, {seen_videos: seenVids, saved_videos: user.saved_videos, current_streak: currStreak, longest_streak: longStreak});
+
+    res.status(200).json({"status": "success"})
   } catch (err) {
     console.log(err.message);
     res.status(500).json({"status": "error", "error": err.message});
