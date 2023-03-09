@@ -60,7 +60,6 @@ async function deleteSavedVideos(url) {
             body: {username: identityInfo.userInfo.username, url: url}
         });
 
-        loadSavedVideos(identityInfo);
     } catch(error){
         console.log(error);
         throw(error);
