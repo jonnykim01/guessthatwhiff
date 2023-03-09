@@ -21,10 +21,15 @@ router.get('/', async (req, res) => {
 
     // Get the count of unseen posts
     req.models.Post.count({url: {$nin: user.seen_videos}}).exec(function (err, count) {
-
+      console.log(count);
       // TODO: give script for users to reset watch history
       if (count == 0) {
-
+        res.json({content: `
+          <div class="mt-2">
+            <h2>You watched all of the videos. Would you like to reset and watch the videos again?</h2>
+            <button onclick="resetVideos()">Reset!</button>
+          </div>
+        `});
       } else {
         // Get a random entry
         var random = Math.floor(Math.random() * count);
@@ -75,13 +80,26 @@ router.post('/', async (req, res) => {
 router.post("/seen", async (req, res, next) => {
   let username = req.body.username;
   let url = req.body.url;
-  let correct = req.body.correct;
 
   try {
     let user = await req.models.User.findOne({username: username});
     console.log(user);
     let seenVids = user.seen_videos;
     seenVids.push(url);
+
+    await req.models.User.updateOne({username: username}, {seen_videos: seenVids, saved_videos: user.saved_videos, longest_streak: user.longest_streak});
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({"status": "error", "error": err.message});
+  }
+});
+
+router.post("/reset", async (req, res, next) => {
+  let username = req.body.username;
+
+  try {
+    let user = await req.models.User.findOne({username: username});
+    let seenVids = [];
 
     await req.models.User.updateOne({username: username}, {seen_videos: seenVids, saved_videos: user.saved_videos, longest_streak: user.longest_streak});
   } catch (err) {
