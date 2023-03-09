@@ -10,14 +10,24 @@ router.post('/', async (req, res, next) => {
       let url = req.body.url;
       let video = await req.models.Post.findOne({url: url});
 
-      let savedVids = user.saved_videos;
-      savedVids.push(video);
+      let exists = user.saved_videos.filter(vid => {
+        return vid.url == video.url
+      })[0];
 
+      if (exists) {
+        res.status(200).json({
+          "status": "success",
+          "message": "video is already saved"
+        })
+      } else {
+        var savedVids = user.saved_videos;
+        savedVids.push(video);
+      }
       await req.models.User.updateOne({username: username}, {saved_videos: savedVids});
     }
   } catch (err) {
     console.log(err.message);
-    res.status(500).json({"status": "error", "error": "error"});
+    res.status(500).json({"status": "error", "error": err.message});
   }
 });
 

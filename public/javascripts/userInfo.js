@@ -27,16 +27,12 @@ async function loadSavedVideos(identityInfo) {
             embedLink = embedLink.split("&")[0];
             let videoEmbed = document.createElement("div");
             videoEmbed.classList.add("mt-2");
-            videoEmbed.classList.add("border");
-            videoEmbed.classList.add("border-dark");
             let iframe = document.createElement("iframe");
             iframe.width = 500;
             iframe.height = 280;
             iframe.src = "https://youtube.com/embed/" + embedLink;
             let rank = document.createElement("p");
             rank.innerHTML = "Rank: " + vid.rank;
-            videoEmbed.appendChild(iframe);
-            videoEmbed.appendChild(rank);
             let deleteButton = document.createElement('button');
             deleteButton.innerHTML = "Un-Save Video";
             deleteButton.addEventListener('click', function(){
@@ -44,8 +40,12 @@ async function loadSavedVideos(identityInfo) {
                 document.getElementById("saved_videos").innerHTML = "";
                 loadSavedVideos(identityInfo);
             });
+            let line = document.createElement("hr")
+            videoEmbed.appendChild(iframe);
+            videoEmbed.appendChild(rank);
+            videoEmbed.appendChild(deleteButton);
+            videoEmbed.appendChild(line);
             document.getElementById("saved_videos").appendChild(videoEmbed);
-            document.getElementById("saved_videos").appendChild(deleteButton);
         });
     } catch (err) {
         console.log(error);

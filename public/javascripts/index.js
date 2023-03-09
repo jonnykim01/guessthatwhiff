@@ -45,20 +45,22 @@ async function loadPost(){
                     <h2 class="pt-5">Guess the rank of this clip</h2>
                     <iframe width=1000 height=563 src='${youtubeEmbedUrl + vidId}'></iframe>
                 </div>
-                <div id="guess" class="pt-2">
-                    <label for="rankGuess">What rank is this clip?:</label>
-                    <select name="rank" id="rankGuess">
-                    <option value="">--Please choose an option--</option>
-                    <option value="iron">Iron</option>
-                    <option value="bronze">Bronze</option>
-                    <option value="silver">Silver</option>
-                    <option value="gold">Gold</option>
-                    <option value="platinum">Platinum</option>
-                    <option value="diamond">Diamond</option>
-                    <option value="acendant">Acendant</option>
-                    <option value="immortal">Immortal</option>
-                    <option value="radiant">Radiant</option>
-                    </select>
+                <div id="guessBox">
+                    <div id="guess" class="pt-2">
+                        <label for="rankGuess">What rank is this clip?:</label>
+                        <select name="rank" id="rankGuess">
+                        <option value="">--Please choose an option--</option>
+                        <option value="iron">Iron</option>
+                        <option value="bronze">Bronze</option>
+                        <option value="silver">Silver</option>
+                        <option value="gold">Gold</option>
+                        <option value="platinum">Platinum</option>
+                        <option value="diamond">Diamond</option>
+                        <option value="acendant">Acendant</option>
+                        <option value="immortal">Immortal</option>
+                        <option value="radiant">Radiant</option>
+                        </select>
+                    </div>
                     <div id="results"></div>
                 </div>`;
             document.getElementById("post_box").innerHTML = postsHtml;
@@ -74,7 +76,7 @@ async function loadPost(){
             saveButton.addEventListener('click', function(){
                 saveVideo(postInfo);
             });
-            document.getElementById("guess").appendChild(saveButton);
+            document.getElementById("guessBox").appendChild(saveButton);
 
             let guessResult = document.createElement('div');
             guessResult.classList.add("guessResult");
@@ -105,23 +107,25 @@ async function resetVideos() {
 }
 
 async function postUrl(){
-    if (document.getElementById("urlInput.value" != "")) {
+    if (document.getElementById("urlInput").value != "" && document.getElementById("rankInput").value != "") {
         document.getElementById("postStatus").innerHTML = "sending data...";
-    let url = document.getElementById("urlInput").value;
-    let rank = document.getElementById("rankInput").value;
+        let url = document.getElementById("urlInput").value;
+        let rank = document.getElementById("rankInput").value;
 
-    try{
-        await fetchJSON(`api/posts`, {
-            method: "POST",
-            body: {url: url, rank: rank}
+        try{
+            await fetchJSON(`api/posts`, {
+                method: "POST",
+                body: {url: url, rank: rank}
             });
-    }catch(error){
+        }catch(error){
             document.getElementById("postStatus").innerText = "Error";
             throw(error);
-    }
-    document.getElementById("urlInput").value = "";
-    document.getElementById("rankInput").value = "";
+        }
+        document.getElementById("urlInput").value = "";
+        document.getElementById("rankInput").value = "";
         document.getElementById("postStatus").innerHTML = "successfully uploaded";
+    } else if (document.getElementById("rankInput").value == "") {
+        document.getElementById("postStatus").innerHTML = "please include a rank";
     } else {
         document.getElementById("postStatus").innerHTML = "please include a url";
     }
