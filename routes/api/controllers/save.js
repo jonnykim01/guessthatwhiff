@@ -6,11 +6,9 @@ router.post('/', async (req, res, next) => {
     if (req.session.isAuthenticated) {
       let username = req.body.username;
       let user = await req.models.User.findOne({username: username});
-      console.log(user);
 
       let url = req.body.url;
       let video = await req.models.Post.findOne({url: url});
-      console.log(video);
 
       let savedVids = user.saved_videos;
       savedVids.push(video);
@@ -37,9 +35,23 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// TODO: BACKEND FOR DELETE FUNCTION
-router.delete('/', async (req, res, next) => {
 
+router.post('/delete', async (req, res, next) => {
+  let username = req.body.username;
+
+  try {
+    let user = await req.models.User.findOne({username: username});
+    let savedVids = user.saved_videos;
+
+    let index = savedVids.indexOf(req.body.url);
+    savedVids.splice(index, 1);
+    console.log(savedVids);
+
+    await req.models.User.updateOne({username: username}, {saved_videos: savedVids});
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({"status": "error", "error": err.message});
+  }
 });
 
 export default router;
