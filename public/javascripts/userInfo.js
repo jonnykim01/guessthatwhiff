@@ -1,13 +1,18 @@
 async function init() {
-    let identityInfo = await fetchJSON(`/api/users/myIdentity`);
-    let identityDiv = document.getElementById("identity_div");
+    try {
+        let identityInfo = await fetchJSON(`/api/users/myIdentity`);
+        let identityDiv = document.getElementById("identity_div");
 
-    if(identityInfo.status == "loggedin") {
-        identityDiv.innerHTML = `Logged in as ${identityInfo.userInfo.name} (${identityInfo.userInfo.username})`;
+        if(identityInfo.status == "loggedin") {
+            identityDiv.innerHTML = `Logged in as ${identityInfo.userInfo.name} (${identityInfo.userInfo.username})`;
 
-        loadSavedVideos(identityInfo);
-    } else {
-        identityDiv.innerHTML = `Not logged in. Return to homepage to login`;
+            loadSavedVideos(identityInfo);
+        } else {
+            identityDiv.innerHTML = `Not logged in. Return to homepage to login`;
+        }
+    } catch (err) {
+        console.log(error);
+        throw(error);
     }
 }
 
@@ -47,7 +52,6 @@ async function loadSavedVideos(identityInfo) {
     }
 }
 
-// TODO: DELETE FUNCTION
 async function deleteSavedVideos(url) {
     try {
         let identityInfo = await fetchJSON(`/api/users/myIdentity`);
