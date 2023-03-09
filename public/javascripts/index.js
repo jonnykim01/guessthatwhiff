@@ -108,29 +108,27 @@ async function guess(post) {
     let resultMsg = ""
     try {
         let identityInfo = await fetchJSON(`api/users/myIdentity`);
-        if (identityInfo.status == "loggedin") {
-            // find user info
-            var user = await fetchJSON(`api/users?username=${identityInfo.userInfo.username}`);
-        }
 
         if(guess == post.rank) {
             console.log("correct!");
             result.style.color = 'lightgreen';
             resultMsg = "Correct!";
+            await seenVideo(post, true);
         } else {
             console.log("incorrect. The correct answer was " + post.rank + ".");
             result.style.color = 'red';
             resultMsg = ("Incorrect. The correct answer was " + post.rank + ".");
+            await seenVideo(post, false);
         }
 
         if (identityInfo.status == "loggedin") {
+            var user = await fetchJSON(`api/users?username=${identityInfo.userInfo.username}`);
             resultMsg += " Your current streak is now " + user.current_streak
         } else {
             resultMsg += " Log in to track your guess streak."
         }
         result.innerHTML = resultMsg;
         document.getElementById("post").appendChild(result);
-        seenVideo(post);
     } catch (err) {
         result.innerHTML = "error";
         document.getElementById("post").appendChild(result);
@@ -154,14 +152,14 @@ async function saveVideo(postInfo) {
 }
 
 // for no duplicate functionality
-async function seenVideo(post) {
+async function seenVideo(post, correct) {
     try{
         let identityInfo = await fetchJSON(`api/users/myIdentity`);
         let username = identityInfo.userInfo.username;
 
         await fetchJSON(`api/posts/seen`, {
             method: "POST",
-            body: {url: post.url, username: username}
+            body: {url: post.url, username: username, correct: correct}
         });
     }catch(error){
         console.log(error);
