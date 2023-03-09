@@ -88,6 +88,9 @@ router.post("/seen", async (req, res, next) => {
     let longStreak = user.longest_streak;
     if (correct) {
       currStreak ++;
+      if (currStreak > longStreak) {
+        longStreak = currStreak;
+      }
     } else {
       if (currStreak > longStreak) {
         longStreak = currStreak;
