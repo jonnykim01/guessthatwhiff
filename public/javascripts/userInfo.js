@@ -38,7 +38,6 @@ async function loadSavedVideos(identityInfo) {
             deleteButton.addEventListener('click', function(){
                 deleteSavedVideos(vid.url);
                 document.getElementById("saved_videos").innerHTML = "";
-                loadSavedVideos(identityInfo);
             });
             let line = document.createElement("hr")
             videoEmbed.appendChild(iframe);
