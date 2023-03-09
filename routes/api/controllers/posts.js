@@ -21,8 +21,8 @@ router.get('/', async (req, res) => {
 
     // Get the count of unseen posts
     req.models.Post.count({url: {$nin: user.seen_videos}}).exec(function (err, count) {
-      console.log(count);
-      // TODO: give script for users to reset watch history
+
+
       if (count == 0) {
         res.json({content: `
           <div class="mt-2">
@@ -80,10 +80,10 @@ router.post('/', async (req, res) => {
 router.post("/seen", async (req, res, next) => {
   let username = req.body.username;
   let url = req.body.url;
+  let correct = req.body.correct;
 
   try {
     let user = await req.models.User.findOne({username: username});
-    console.log(user);
 
     let seenVids = user.seen_videos;
     seenVids.push(url);

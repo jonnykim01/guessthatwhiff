@@ -45,7 +45,6 @@ router.post('/delete', async (req, res, next) => {
 
     let index = savedVids.indexOf(req.body.url);
     savedVids.splice(index, 1);
-    console.log(savedVids);
 
     await req.models.User.updateOne({username: username}, {saved_videos: savedVids});
   } catch (err) {
