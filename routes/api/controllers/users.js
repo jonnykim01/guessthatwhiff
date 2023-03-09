@@ -10,9 +10,15 @@ router.get('/myIdentity', function(req, res, next) {
       userInfo: {
          name: req.session.account.name,
          username: req.session.account.username}
-   })
+   });
   } else {
-    res.json({staus: "loggedout"});
+    res.json({
+      status: "loggedout",
+      userInfo: {
+        name: "guest",
+        username: "guest"
+      }
+    });
   }
 });
 

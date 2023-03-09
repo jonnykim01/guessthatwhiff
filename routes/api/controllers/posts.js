@@ -7,6 +7,13 @@ router.get('/', async (req, res) => {
     if (req.session.isAuthenticated) {
       let username = req.query.username;
       var user = await req.models.User.findOne({username: username});
+    } else {
+      let username = "guest";
+      var user = {
+        username: username,
+        seen_videos: [],
+        saved_videos: []
+      }
     }
     // find Posts in database
     console.log("finding posts in database");
