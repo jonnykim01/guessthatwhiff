@@ -75,6 +75,7 @@ router.post('/', async (req, res) => {
 router.post("/seen", async (req, res, next) => {
   let username = req.body.username;
   let url = req.body.url;
+  let correct = req.body.correct;
 
   try {
     let user = await req.models.User.findOne({username: username});

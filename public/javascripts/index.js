@@ -1,18 +1,7 @@
 const youtubeEmbedUrl = "https://youtube.com/embed/";
 
-async function init(){
-    let urlInput = document.getElementById("urlInput");
-    await loadIdentity();
-    loadPosts();
-}
-
-function signIn() {
-    document.getElementById("make_post_div").classList.remove("display");
-    console.log("here");
-}
-
-function signOut() {
-
+async function init() {
+    checkProfile();
 }
 
 async function checkProfile() {
@@ -31,7 +20,6 @@ async function checkProfile() {
 }
 
 async function loadPost(){
-    checkProfile();
     let identityInfo = await fetchJSON(`api/users/myIdentity`);
     let username = identityInfo.userInfo.username;
 
@@ -90,47 +78,64 @@ async function loadPost(){
 async function postUrl(){
     if (document.getElementById("urlInput.value" != "")) {
         document.getElementById("postStatus").innerHTML = "sending data...";
-        let url = document.getElementById("urlInput").value;
-        let rank = document.getElementById("rankInput").value;
+    let url = document.getElementById("urlInput").value;
+    let rank = document.getElementById("rankInput").value;
 
-        try{
-            await fetchJSON(`api/posts`, {
-                method: "POST",
-                body: {url: url, rank: rank}
+    try{
+        await fetchJSON(`api/posts`, {
+            method: "POST",
+            body: {url: url, rank: rank}
             });
-        }catch(error){
+    }catch(error){
             document.getElementById("postStatus").innerText = "Error";
             throw(error);
-        }
-        document.getElementById("urlInput").value = "";
-        document.getElementById("rankInput").value = "";
+    }
+    document.getElementById("urlInput").value = "";
+    document.getElementById("rankInput").value = "";
         document.getElementById("postStatus").innerHTML = "successfully uploaded";
     } else {
         document.getElementById("postStatus").innerHTML = "please include a url";
     }
 }
 
-function guess(post) {
+async function guess(post) {
+    let result = document.createElement('p');
+    let msg = ""
     let guess = document.getElementById("rankGuess").value;
     console.log("you guessed: " + guess);
     document.getElementById("guess").remove();
-
-
-    let result = document.createElement('p');
     result.classList.add("mt-3");
+    let resultMsg = ""
+    try {
+        let identityInfo = await fetchJSON(`api/users/myIdentity`);
+        if (identityInfo.status == "loggedin") {
+            // find user info
+            var user = await fetchJSON(`api/users?username=${identityInfo.userInfo.username}`);
+        }
 
-    if(guess == post.rank) {
-        console.log("correct!");
-        result.style.color = 'lightgreen';
-        result.innerHTML = "Correct!";
-    } else {
-        console.log("incorrect. The correct answer was " + post.rank);
-        result.style.color = 'red';
-        result.innerHTML = ("Incorrect. The correct answer was " + post.rank);
+        if(guess == post.rank) {
+            console.log("correct!");
+            result.style.color = 'lightgreen';
+            resultMsg = "Correct!";
+        } else {
+            console.log("incorrect. The correct answer was " + post.rank + ".");
+            result.style.color = 'red';
+            resultMsg = ("Incorrect. The correct answer was " + post.rank + ".");
+        }
+
+        if (identityInfo.status == "loggedin") {
+            resultMsg += " Your current streak is now " + user.current_streak
+        } else {
+            resultMsg += " Log in to track your guess streak."
+        }
+        result.innerHTML = resultMsg;
+        document.getElementById("post").appendChild(result);
+        seenVideo(post);
+    } catch (err) {
+        result.innerHTML = "error";
+        document.getElementById("post").appendChild(result);
+        throw(err);
     }
-
-    document.getElementById("post").appendChild(result);
-    seenVideo(post);
 }
 
 async function saveVideo(postInfo) {

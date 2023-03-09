@@ -22,17 +22,20 @@ router.get('/myIdentity', function(req, res, next) {
   }
 });
 
-router.get('/', function(req, res, next) {
-  if(req.session.isAuthenticated){
-    res.send(`
-      responding with information about the user
-      with the name: ${req.session.account.name}
-      and the username: ${req.session.account.username}
-
-    `)
-  } else {
-    res.send('Error: You must be logged in');
+router.get('/', async function(req, res, next) {
+  try {
+    // need username in query
+    let username = req.query.username
+    let user = await req.models.User.findOne({username: username});
+    let userData = {"username": user.username, "saved_videos": user.saved_videos, "current_streak": user.current_streak, "longest_streak": user.longest_streak, "seen_videos": user.seen_videos}
+    res.json(userData)
+  } catch(err) {
+    res.status(500).json({
+      "status": "error",
+      "error": err.message
+    })
   }
+  
 });
 
 router.post('/', async (req, res, next) => {
@@ -42,6 +45,7 @@ router.post('/', async (req, res, next) => {
       const newUser = new req.models.User({
           username: req.body.username,
           saved_videos: [],
+          current_streak: 0,
           longest_streak: 0,
           seen_videos: []
       });

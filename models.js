@@ -22,6 +22,7 @@ models.Post = mongoose.model('Post', postSchema);
 const userSchema = new mongoose.Schema({
     username: String,
     saved_videos: [postSchema],
+    current_streak: Number,
     longest_streak: Number,
     seen_videos: [String]
 }, {
