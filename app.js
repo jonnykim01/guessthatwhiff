@@ -5,31 +5,31 @@ import logger from 'morgan';
 import sessions from 'express-session'
 import msIdExpress from 'microsoft-identity-express'
 // For Localhost
-const appSettings = {
-    appCredentials: {
-        clientId:  "d47af6a1-fdaf-4ba3-a10e-8ba17b7f3f98",
-        tenantId:  "f6b6dd5b-f02f-441a-99a0-162ac5060bd2",
-        clientSecret:  "BQW8Q~ypjGVnvylbrhy-6zbwjm3ZMwM2yZAAcbUn"
-    },	
-    authRoutes: {
-        redirect: "http://localhost:3000/redirect", //note: you can explicitly make this "localhost:3000/redirect" or "examplesite.me/redirect"
-        error: "/error", // the wrapper will redirect to this route in case of any error.
-        unauthorized: "/unauthorized" // the wrapper will redirect to this route in case of unauthorized access attempt.
-    }
-};
-// For Deployment
 // const appSettings = {
 //     appCredentials: {
-//         clientId:  "2fc9b6b9-2df0-4293-a507-76f8cdd08d50",
+//         clientId:  "d47af6a1-fdaf-4ba3-a10e-8ba17b7f3f98",
 //         tenantId:  "f6b6dd5b-f02f-441a-99a0-162ac5060bd2",
-//         clientSecret:  "5jw8Q~5n9XloV4Kk034M_LkPBYudfjwAJ7QpIbiC"
+//         clientSecret:  "BQW8Q~ypjGVnvylbrhy-6zbwjm3ZMwM2yZAAcbUn"
 //     },	
 //     authRoutes: {
-//         redirect: "https://guessthatwhiff.azurewebsites.net/redirect", //note: you can explicitly make this "localhost:3000/redirect" or "examplesite.me/redirect"
+//         redirect: "http://localhost:3000/redirect", //note: you can explicitly make this "localhost:3000/redirect" or "examplesite.me/redirect"
 //         error: "/error", // the wrapper will redirect to this route in case of any error.
 //         unauthorized: "/unauthorized" // the wrapper will redirect to this route in case of unauthorized access attempt.
 //     }
 // };
+// For Deployment
+const appSettings = {
+    appCredentials: {
+        clientId:  "2fc9b6b9-2df0-4293-a507-76f8cdd08d50",
+        tenantId:  "f6b6dd5b-f02f-441a-99a0-162ac5060bd2",
+        clientSecret:  "5jw8Q~5n9XloV4Kk034M_LkPBYudfjwAJ7QpIbiC"
+    },	
+    authRoutes: {
+        redirect: "https://guessthatwhiff.azurewebsites.net/redirect", //note: you can explicitly make this "localhost:3000/redirect" or "examplesite.me/redirect"
+        error: "/error", // the wrapper will redirect to this route in case of any error.
+        unauthorized: "/unauthorized" // the wrapper will redirect to this route in case of unauthorized access attempt.
+    }
+};
 
 import apiRouter from './routes/api/api.js';
 
