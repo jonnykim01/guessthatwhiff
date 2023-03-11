@@ -78,6 +78,7 @@ async function loadStreaks(identityInfo) {
         document.getElementById("streaks").appendChild(currStreak);
         document.getElementById("streaks").appendChild(longStreak);
     } catch (err) {
-
+        console.log(error);
+        throw(error);
     }
 }
